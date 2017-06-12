@@ -1,0 +1,73 @@
+
+  <%= tinymce %>
+  <%= form_for(@image, {multipart: true}) do |f| %>
+  <% if image.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(image.errors.count, "error") %> prohibited this image from being saved:</h2>
+
+      <ul>
+      <% image.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="form-header">
+    <% if !@image.file.blank? %>
+     <%= image_tag @image.file , :class => "himage", :id => "form-header-image" %>
+    <% else %>
+      <%= image_tag "japan.jpg", :class => "himage", :id => "form-header-image" %>
+    <% end %>
+      <div class="hbutton">
+        <label for="image_file" class="btn btn-default">
+          Change image
+        </label>
+        <%= f.file_field :file %>
+      </div>
+  </div>
+  
+  <div class="form-content">
+    <div class="field form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title,  class: "form-control", autofocus: true  %>
+    </div>
+    
+    <div class="field form-group">
+      <%= f.label :description %>
+      <%= f.text_area :description, :class => "form-control", :rows => 4, :cols => 120  %>
+    </div>
+    
+    <div class="field">
+      <%= f.label :Content, style: "font-size: 13px;font-family: verdana, arial, helvetica, sans-serif;" %>
+      <%= f.text_area :review, :class => "tinymce", :rows => 40, :cols => 120  %>
+    </div>
+  
+    <div class="actions" align="right" style="border-top: 1px solid rgb(242, 242, 242); padding-top: 20px">
+      <%= f.submit "Apply", :class => "btn btn-info btn-medium" %>
+    </div>
+  </div>
+  
+<% end %>
+
+<script>
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function (e) {
+            $('#form-header-image').attr('src', e.target.result);
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+  }
+  
+  $("#image_file").change(function(){
+      readURL(this);
+  });
+</script>
+
+  
+
+

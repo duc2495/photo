@@ -1,0 +1,20 @@
+<%= tinymce_assets %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Photo</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+
+  <body style="background-color: rgb(242, 242, 242);">
+    <%= render 'layouts/header' %>
+    <div class="" style="padding-top: 20px">
+
+      <%= yield %>
+    </div>
+  </body>
+</html>

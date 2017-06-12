@@ -1,0 +1,47 @@
+<div class="container" style="padding-top: 40px">
+  <div>
+    <%= image_tag @image.file , :style => "object-fit: cover;width:100%;height:400px;" %>
+  </div>
+  <div class="post-detail">
+    
+    <div class="content">
+      <span class="title"><%= @image.title %></span>
+
+      <p><%= @image.description %></p>
+    
+      <%= @image.review.html_safe %>
+    </div>
+
+   <div class="comment">
+    <% if current_user %>
+      <%= form_for(@image_comment) do |f| %>
+  
+      <div class= "field my-comment" style="padding-bottom: 5px">
+        <table>
+          <tr>
+            <td>
+              <%= image_tag current_user.avatar.url(:thumb) ,size: "30x30"%>
+            </td>
+            <td style="width: 100%">
+              <%= f.text_field :comment, placeholder: 'Write a comment', class: 'form-control' %>
+            </td>
+          </tr>
+        </table>
+        
+        <%= f.hidden_field :image_id, :value => @image.id %>
+      </div>
+      <% end %>
+    <% end %>
+      
+    <% @image.image_comment.each do |image_comment|%>
+    <div class="post-comment-detail border-bottom">
+      <%= image_tag image_comment.user.avatar.url(:thumb) ,size: "30x30"%>
+      <span style="color: #A4A4A4"><%= image_comment.user.name %></span><br/>
+      <p style="margin: 10px 40px"><%= image_comment.comment %></p>
+    </div>
+    
+    <% end %>
+   </div>
+  </div>
+</div>  
+  

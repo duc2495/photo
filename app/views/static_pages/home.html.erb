@@ -1,0 +1,25 @@
+   <% if current_user %>
+   
+    <div class="row" >
+      <div class="col-md-3">
+      </div>
+       <div class="col-md-6 well">
+        <div class="row">
+          <div class="col-md-3">
+            <p><%= image_tag(current_user.avatar.url(:thumb)) %></p>
+        </div>
+        <div class="col-md-9">
+     
+         <h3><%= "Name  : #{current_user.name}"  %></h3>
+         <h3><%= "Email : #{current_user.email}"  %></h3>
+          <h3><%= "Age : #{current_user.age}"  %></h3>
+         <h3><%= link_to "edit",edit_user_registration_path %></h3>
+          </div>
+         </div>
+      </div>
+       <div class="col-md-3">
+      </div>
+
+
+    </div>
+  <% end %>

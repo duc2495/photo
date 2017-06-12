@@ -1,0 +1,137 @@
+<% if @images.blank? %>
+  <h4>Khong tim thay bai dang: <%= params[:search] %>.</h4>
+<% end %>
+
+<div id="mycarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#mycarousel" data-slide-to="1"></li>
+    <li data-target="#mycarousel" data-slide-to="2"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item">
+        <%= image_tag("japan.jpg") %>
+        <div class="carousel-caption">
+            <h3>Japan</h3>
+        </div>
+    </div>
+    <div class="item">
+        <%= image_tag("vietnam.jpg") %>
+        <div class="carousel-caption">
+            <h3>Vietnam</h3>
+        </div>
+    </div>
+    <div class="item">
+        <img src="https://unsplash.it/2000/1250?image=675" data-color="violet" alt="Third Image">
+        <div class="carousel-caption">
+            <h3>Third Image</h3>
+        </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+</div>
+
+<script>
+  var $item = $('.carousel .item'); 
+  var $wHeight = window.innerHeight;
+  $item.eq(0).addClass('active');
+  $item.height($wHeight); 
+  $item.addClass('full-screen');
+  
+  $('.carousel img').each(function() {
+    var $src = $(this).attr('src');
+    var $color = $(this).attr('data-color');
+    $(this).parent().css({
+      'background-image' : 'url(' + $src + ')',
+      'background-color' : $color
+    });
+    $(this).remove();
+  });
+  
+  $(window).on('resize', function (){
+    $wHeight = $(window).height();
+    $item.height($wHeight);
+  });
+  
+  $('.carousel').carousel({
+    interval: 6000,
+    pause: "false"
+  });
+</script>
+<% if user_signed_in? %>
+<div class="container">
+  <% @images.each do |image| %>
+  <div class="post">
+    <div class="post-author">
+      <div class="col-md-1">
+        <%= image_tag(image.user.avatar.url(:thumb), size: "40x40", class: "author-avatar")  %>
+      </div>
+      <div class="col-md-3">
+        <div class="short-div"><%= image.user.name %></div>
+        <div style="color: #A4A4A4;"><%= time_ago_in_words(image.created_at) %> ago</div>
+      </div>
+    </div>
+      
+    <div class="post-content">
+      <%= link_to image_tag(image.file, class:"images-post") , image %>
+      
+      <div class="title-and-description">
+        <div class="title">
+          <%= link_to image.title, image %>
+        </div>
+        <div class="description">
+           <p><%= image.description %></p>
+        </div>
+       
+      </div>
+    </div>
+    
+    <div class="post-action">
+      <button type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-heart"></span> 10
+      </button>
+      <button type="button" class="btn btn-default" id="post-comment-button">
+        <span class="glyphicon glyphicon-comment"></span> <%= image.image_comment.count %>
+      </button>
+      <% if current_user.id == image.user.id %>
+      <%= link_to "<button type=\"button\" class=\"btn btn-default\">
+                      <span class=\"glyphicon glyphicon-pencil\"></span> Edit
+                    </button>".html_safe, edit_image_path(image) %>
+      <% end %>
+    </div>
+    
+    <div class="post-comment">
+      
+      <% if current_user %>
+      <%= form_for @image_comment, :remote => true do |f| %>
+    
+      <div class= "field post-your-comment" style="padding-bottom: 5px">
+        <table>
+          <tr>
+            <td>
+              <%= image_tag current_user.avatar.url(:thumb) ,size: "30x30"%>
+            </td>
+            <td style="width: 100%">
+              <%= f.text_field :comment, placeholder: 'Write a comment', class: 'form-control' %>
+            </td>
+          </tr>
+        </table>
+        
+        <%= f.hidden_field :image_id, :value => image.id %>
+      </div>
+      
+      <% end %>
+      <% end %>
+      
+      <%= render 'comment', image: image %>
+    </div> 
+    
+    
+  </div>
+<% end %>
+</div>
+<% end %>

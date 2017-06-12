@@ -1,0 +1,101 @@
+
+<div class="container">
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= devise_error_messages! %>
+    
+    <div class="profile-header-background">
+     <div class="field">
+       <%= image_tag(current_user.avatar.url(:thumb), class: "profile-header-avatar")  %>
+       <label for="user_avatar" class="btn btn-default profile-header-button">
+         <i class="glyphicon glyphicon-cloud-upload"></i> Change avatar
+        </label>
+        <input id="user_avatar" name="user[avatar]" type="file"/>
+        <%= f.file_field :avatar %>
+     </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-9">
+      
+        <% current_user.images.each do |image| %>
+          <div class="profile-post">
+              <div class="profile-post-author">
+                <div class="col-md-1">
+                  <%= image_tag(image.user.avatar.url(:thumb), size: "40x40", class: "author_avatar")  %>
+                </div>
+                <div class="col-md-2">
+                  <div class="short_div"><%= image.user.name %></div>
+                  <div style="color: #A4A4A4;"><%= time_ago_in_words(image.created_at) %> ago</div>
+                </div>
+              </div>
+              <div class="profile-post-image">
+                <%= image_tag image.file ,class:"images-post"%>
+                <span style="font-weight: bold"><%= image.title %></span>
+                <%= image.description %>
+              </div>
+              <div class="profile-post-comment">
+                <button type="button" class="btn btn-default">
+                  <span class="glyphicon glyphicon-heart"></span> 10
+                </button>
+                <button type="button" class="btn btn-default">
+                  <span class="glyphicon glyphicon-comment"></span> 5
+                </button>
+              </div>
+          </div>
+
+        <% end %>
+      </div>
+      
+      <div class="col-md-3" style="background-color: #ffffff; margin-top: 20px">
+        <div class="profile-info">
+          <h3>Info</h3>
+          <div class="field form-group">
+            <%= f.label :email %>
+            <%= f.email_field :email,class:'form-control', autofocus: true %>
+          </div>
+    
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+          <% end %>
+    
+          <div class="field form-group">
+            <%= f.label :name %>
+            <%= f.text_field :name,class:'form-control' , autofocus: true %>
+          </div>
+        </div>
+        
+        <h3>Change Password</h3>
+        <div class="profile-change-password">
+          <div class="field">
+            <%= f.label :current_password %>
+            <%= f.password_field :current_password,class:'form-control', autocomplete: "off" %>
+          </div>
+  
+          <div class="field">
+            <%= f.label :Change_password %>
+            <%= f.password_field :password,class:'form-control', autocomplete: "off" %>
+          </div>
+  
+          <div class="field">
+            <%= f.label :password_confirmation %>
+            <%= f.password_field :password_confirmation,class:'form-control', autocomplete: "off" %>
+          </div>
+        </div>
+        <br/>
+        <div class="actions" align="right">
+            <%= f.submit "Update", class:'btn btn-primary' %>
+        </div>
+        
+      </div>
+    </div>
+    <% end %>
+</div>
+    
+    
+<script>
+  document.getElementById("user_avatar").onchange = function() {
+      document.getElementById("edit_user").submit();
+  }
+</script>
+
+

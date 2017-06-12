@@ -1,0 +1,10 @@
+<div id="<%= image.id %>-comment">
+        <% image.image_comment.each do |image_comment|%>
+        <div class="post-comments border-bottom">
+          <%= image_tag image_comment.user.avatar.url(:thumb) ,size: "30x30"%>
+          <span style="color: #A4A4A4"><%= image_comment.user.name %></span><br/>
+          <p style="margin: 10px 40px"><%= image_comment.comment %></p>
+        </div>
+        
+      <% end %>
+</div>
